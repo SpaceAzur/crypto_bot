@@ -6,7 +6,7 @@ from typing import Dict, List
 class Kucoin(Plateform):
     
     PLATEFORM = "kucoin"
-    PASSPHRASE = "Anatole-99/patagoni@"
+    PASSPHRASE = ""
     SECRET = ""
     API_KEY = ""
 
@@ -17,7 +17,6 @@ class Kucoin(Plateform):
         self.client = User(key=self.API_KEY, 
                            secret=self.SECRET, 
                            passphrase=self.PASSPHRASE)
-
 
     def get_conf(self, key):
         with open(f"{self.PROJECT_PATH}/{self.CONF_FILE}", "r") as f:
@@ -45,7 +44,6 @@ class Kucoin(Plateform):
             error = exc.args[0]
             if "null" in error:
                 logging.debug(f"no deposit address has been created yet for {crypto}")
-            
             content: dict = self.client.create_deposit_address(currency=crypto)
         return content
 

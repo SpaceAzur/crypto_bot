@@ -10,6 +10,7 @@ class Kucoin(Plateform):
     SECRET = ""
     API_KEY = ""
 
+    # TODO: update loading conf method for config.ini
     def __init__(self):
         self.conf = self.get_conf(key=self.PLATEFORM)
         self.API_KEY = self.conf.get(f"{self.PLATEFORM}").get('kucoin_api_key')

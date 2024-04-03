@@ -2,22 +2,20 @@ from plateforms import Plateform
 from kucoin.client import Market, Trade, User
 import json, logging
 from typing import Dict, List
+from config import load_config
 
 class Kucoin(Plateform):
     
-    PLATEFORM = "kucoin"
-    PASSPHRASE = ""
-    SECRET = ""
-    API_KEY = ""
+    NAME = "kucoin"
 
-    # TODO: update loading conf method for config.ini
     def __init__(self):
-        self.conf = self.get_conf(key=self.PLATEFORM)
-        self.API_KEY = self.conf.get(f"{self.PLATEFORM}").get('kucoin_api_key')
-        self.SECRET = self.conf.get(f"{self.PLATEFORM}").get('kucoin_api_secret')
-        self.client = User(key=self.API_KEY, 
-                           secret=self.SECRET, 
-                           passphrase=self.PASSPHRASE)
+        self.config = load_config(section=self.NAME)
+        self.passphrase = self.config.get("passphrase")
+        self.api_key = self.config.get("api_key")
+        self.secret = self.config.get("secret")
+        self.client = User(key=self.api_key,
+                           secret=self.secret,
+                           passphrase=self.passphrase)
 
     def get_conf(self, key):
         with open(f"{self.PROJECT_PATH}/{self.CONF_FILE}", "r") as f:
@@ -46,6 +44,7 @@ class Kucoin(Plateform):
             if "null" in error:
                 logging.debug(f"no deposit address has been created yet for {crypto}")
             content: dict = self.client.create_deposit_address(currency=crypto)
+            logging.debug(f"deposit address created for {crypto}")
         return content
 
 

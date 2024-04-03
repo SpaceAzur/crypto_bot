@@ -22,6 +22,12 @@ url = "https://cryptopanic.com/api/v1/posts/"
 r = requests.get("https://cryptopanic.com/api/v1/posts/?auth_token=08f50c8a4c4b14e0974d75d3d2f6270ddbf918eb&currencies=BTC&filter=hot")
 token = conf.get("api_key")
 token = token.replace('"','')
-f = requests.get(url, params={"auth_token": token})
+f = requests.get(
+    url,
+    params={
+        "auth_token": token,
+        "filter": "hot",
+        }
+    )
 
 toto = 0
